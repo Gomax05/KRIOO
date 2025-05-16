@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Tu resumen financiero</h2>
+
+<!-- Resumen financiero -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Ingresos</h5>
+                <p class="card-text">S/ {{ ingresos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Gastos</h5>
+                <p class="card-text">S/ {{ gastos }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Ahorros</h5>
+                <p class="card-text">S/ {{ ahorros }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-dark">
+            <div class="card-body">
+                <h5 class="card-title">% Ahorro</h5>
+                <p class="card-text">{{ porcentaje_ahorro }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gráfico -->
+{% if grafico %}
+    <div class="mb-4 text-center">
+        <h4>Evolución de tus registros</h4>
+        <img src="data:image/png;base64,{{ grafico }}" class="img-fluid border rounded shadow" />
+    </div>
+{% endif %}
+
+<!-- Lista de registros -->
+{% for registro, sugerencia in datos %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ registro.tipo }}: S/ {{ registro.monto }}</h5>
+            <p class="card-text">{{ registro.descripcion }}</p>
+            <p><strong>Sugerencia:</strong> {{ sugerencia }}</p>
+            <p class="text-muted">{{ registro.fecha }}</p>
+        </div>
+    </div>
+{% empty %}
+    <p>No tienes registros aún. <a href="{% url 'registrar_finanza' %}">Agrega uno</a></p>
+{% endfor %}
+{% endblock %}
