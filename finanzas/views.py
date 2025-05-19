@@ -84,3 +84,43 @@ def registrar_finanza(request):
     else:
         form = RegistroForm()
     return render(request, 'registro.html', {'form': form})
+
+
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+@login_required
+def editar_finanza(request, pk):
+    registro = get_object_or_404(RegistroFinanciero, pk=pk, usuario=request.user)
+    if request.method == 'POST':
+        form = RegistroForm(request.POST, instance=registro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registro actualizado correctamente.")
+            return redirect('dashboard')
+    else:
+        form = RegistroForm(instance=registro)
+    return render(request, 'registro.html', {'form': form, 'editar': True})
+
+@login_required
+def eliminar_finanza(request, pk):
+    registro = get_object_or_404(RegistroFinanciero, pk=pk, usuario=request.user)
+    if request.method == 'POST':
+        registro.delete()
+        messages.success(request, "Registro eliminado correctamente.")
+        return redirect('dashboard')
+    return render(request, 'confirmar_eliminacion.html', {'registro': registro})
+
+from .forms import RegistroUsuarioForm
+from django.contrib.auth import login
+
+def registro_usuario(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            login(request, usuario)
+            return redirect('dashboard')
+    else:
+        form = RegistroUsuarioForm()
+    return render(request, 'registro.html', {'form': form})

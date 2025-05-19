@@ -55,6 +55,10 @@
             <p class="card-text">{{ registro.descripcion }}</p>
             <p><strong>Sugerencia:</strong> {{ sugerencia }}</p>
             <p class="text-muted">{{ registro.fecha }}</p>
+            <div class="text-end mt-2">
+                <a href="{% url 'editar_finanza' registro.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'eliminar_finanza' registro.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+            </div>
         </div>
     </div>
 {% empty %}

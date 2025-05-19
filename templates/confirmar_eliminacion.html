@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>¿Estás seguro que deseas eliminar este registro?</h3>
+
+<p><strong>{{ registro.tipo }}</strong>: S/ {{ registro.monto }}</p>
+<p>{{ registro.descripcion }}</p>
+<p><small>{{ registro.fecha }}</small></p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
